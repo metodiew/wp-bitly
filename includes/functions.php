@@ -131,13 +131,16 @@ function wpbitly_generate_shortlink($post_id) {
     $url = sprintf(wpbitly_api('shorten'), $token, urlencode($permalink));
     $response = wpbitly_get($url);
 
-    wpbitly_debug_log($response, '/shorten/');
-
-    if (is_array($response)) {
-        $shortlink = $response['data']['url'];
-        update_post_meta($post_id, '_wpbitly', $shortlink);
-    }
-
+    wpbitly_debug_log($response, '/shorten/');
+	
+	if ( is_array( $response ) ) {
+		
+		if ( ! empty( $response['data']['url'] ) ) {
+			$shortlink = $response['data']['url'];
+			update_post_meta( $post_id, '_wpbitly', $shortlink );
+		}
+	
+	}
     return $shortlink;
 }
 
